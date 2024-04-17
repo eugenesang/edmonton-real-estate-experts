@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/styles/defaults.css">
+
 <div class="custom-hero-section">
     <div class="header-left-container">
         <div class="header-left">
@@ -12,90 +14,18 @@
             <div id="h-txt-container" style="position: relative; margin-top: 220px;">
                 <div class="h-txt-container" id="h-txt">
                     <p>Get free NO OBLIGATION home valuation</p>
-                    <form class="guide-search-bar header-form" action="/home-valuation" method="post">
+                    <form class="guide-search-bar header-form" id="hero-section-form" action="/home-valuation"
+                        method="post" onsubmit="e=>submitHeroForm(e)">
                         <div class="input-container">
                             <i class="fa-solid fa-location-dot"></i>
-                            <input type="text" name="searchInput" id="searchInput" placeholder="Enter your address"
-                                required="" autocomplete="off">
-                            <ul id="suggestionsList">
-                                <li>No suggestions found</li>
-                            </ul>
+                            <input type="text" name="searchInput" id="heroSearchInput" placeholder="Enter your address"
+                                required>
                         </div>
 
                         <button class="guide-search-btn">
                             Instant Valuation
                         </button>
                     </form>
-
-
-
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"
-                        integrity="sha512-zoJXRvW2gC8Z0Xo3lBbao5+AS3g6YWr5ztKqaicua11xHo+AvE1b0lT9ODgrHTmNUxeCw0Ry4BGRYZfXu70weg=="
-                        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-                    <script>
-                        const socket = io('https://search.allforeclosures.ca/');
-
-                        const searchForm = document.querySelector('.guide-search-bar');
-                        const searchInput = document.getElementById('searchInput');
-                        const suggestionsList = document.getElementById('suggestionsList');
-
-                        let blurTimer;
-
-                        searchInput.addEventListener('blur', () => {
-                            // Introduce a delay before hiding the suggestions list
-                            blurTimer = setTimeout(() => {
-                                suggestionsList.classList.remove('visible');
-                            }, 200);
-                        });
-
-                        searchInput.addEventListener('focus', () => {
-                            clearTimeout(blurTimer); // Clear the blur timer if input is focused again
-                            suggestionsList.classList.add('visible');
-                        });
-
-
-
-
-                        searchInput.addEventListener('keyup', () => {
-                            const address = searchInput.value.trim();
-                            console.log(address);
-                            socket.emit('search', { address })
-                        })
-
-                        // Listen for 'suggestions' events from the server
-                        socket.on('suggestions', (suggestions) => {
-                            // Update the UI with the received suggestions
-                            displaySuggestions(suggestions);
-                        });
-
-                        // Helper function to display suggestions in the UI
-                        function displaySuggestions(suggestions) {
-                            suggestionsList.classList.add('visible');
-                            suggestionsList.innerHTML = '';
-
-                            if (suggestions.length === 0) {
-                                suggestionsList.innerHTML = '<li>No suggestions found</li>';
-                            } else {
-                                suggestions.forEach((suggestion) => {
-                                    const listItem = document.createElement('li');
-
-                                    const str = (suggestion.toLowerCase() + ', Edmonton, AB').split(' ').map(s => {
-                                        return s.charAt(0).toUpperCase() + s.slice(1);
-                                    }).join(' ');
-
-                                    listItem.textContent = str;
-
-                                    listItem.onclick = () => {
-                                        searchInput.value = str; // Set the input value to the original suggestion
-                                        suggestionsList.classList.remove('visible'); // Hide the suggestions list after a click
-                                    }
-
-                                    suggestionsList.appendChild(listItem);
-                                });
-                            }
-                        }
-                    </script>
                 </div>
             </div>
             <div class="header-left-info" id="header-left-info">
@@ -110,7 +40,182 @@
     </script>
     <div class="header-right">
         <div class="header-right-image">
-            <img src="/images/black-businessman-happy-expression.png" alt="" style="float: left;">
+            <img src="https://allforeclosures.ca/images/black-businessman-happy-expression.png" alt=""
+                style="float: left;">
         </div>
     </div>
 </div>
+<script>
+    function submitHeroForm(event) {
+        event.preventDefault();
+
+        const query = document.getElementById('heroSearchInput').value;
+
+        location.href = `https://edmontonrealestateexperts.com/Search/Search?FilterItems=%5B{%22FilterName%22:%22Sale_Lease%22,%22FilterOperator%22:%22=%22,%22FilterValues%22:%22Sale%22},{%22FilterName%22:%22Common%22,%22FilterOperator%22:%22=%22,%22FilterValues%22:%22${query}%22}%5D&page=1&orderBy=0&viewType=0`;
+    }
+
+</script>
+
+<style>
+    .custom-hero-section .header-left-container {
+        padding-top: 90px;
+        min-height: calc(100vh - 100px);
+    }
+
+    @media(min-width: 992px) {
+        .custom-hero-section .header-left-container {
+            padding-left: 2rem;
+        }
+    }
+
+    .custom-hero-section h1,
+    .custom-hero-section h3 {
+        font-family: abel;
+        font-weight: 500;
+    }
+
+    .custom-hero-section h1 {
+        font-family: "Dm Serif Display", serif;
+        font-weight: 700;
+        color: var(--red);
+        text-shadow: 2px 2px 0 #6c6a6a, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        font-size: 3.5rem;
+        line-height: 3.8rem;
+        margin-bottom: 2rem;
+        width: 100%;
+        text-align: center;
+    }
+
+    .h-txt-container {
+        padding: .5rem;
+        background-color: rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        backdrop-filter: blur(20px);
+        width: 60vw;
+        margin: 20px auto;
+        position: absolute;
+        bottom: 20px;
+    }
+
+    .h-txt-container p {
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        font-family: nunito;
+        line-height: 30px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    @media(min-width: 992px) {
+        .h-txt-container p {
+            color: var(--text-color-1);
+        }
+    }
+
+
+    .custom-hero-section h3.h-h3 {
+        padding: 10px 0px;
+        text-align: center;
+        font-family: nunito;
+    }
+
+    .header-left {
+        margin-right: auto;
+        margin-left: auto
+    }
+
+    .header-left-info p {
+        text-align: center;
+    }
+
+    .header-right-image {
+        width: fit-content;
+        margin: 0px auto;
+    }
+
+    .header-right img {
+        height: 100vh;
+        object-position: right;
+        object-fit: contain;
+    }
+
+
+    .header-left-quiz {
+        margin: 2rem 0px;
+    }
+
+    .h-call-button {
+        margin-bottom: 20px;
+    }
+
+    .header-left-info p {
+        color: var(--blue);
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    @media(max-width: 992px) {
+        .body-wrapper.page {
+            margin: 10px 0px;
+        }
+
+        .custom-hero-section h1 {
+            font-size: 2.6rem;
+            background: radial-gradient(#ffffff89, #ffffff43, #ffffff00);
+        }
+
+        .custom-hero-section h3.h-h3 {
+            font-size: 1.2rem;
+        }
+
+        .custom-hero-section {
+            background-color: white;
+
+        }
+
+        .header-left {
+            max-width: 540px;
+        }
+
+        .header-right {
+            display: none;
+        }
+
+        .custom-hero-section {
+            background-image: url(https://allforeclosures.ca/images/black-man-holding-minihouse.png);
+            background-size: contain;
+            background-position: right;
+            background-repeat: no-repeat;
+        }
+
+        .header-left-container {
+            background-color: #ffffff37;
+        }
+
+        .header-left-container h1 {
+            background: transparent;
+        }
+
+        section#guide-section {
+            background-color: white;
+        }
+    }
+
+    @media(min-width: 992px) {
+        .custom-hero-section {
+            display: grid;
+            grid-template-columns: auto 1fr;
+        }
+
+        .header-left {
+            max-width: 720px
+        }
+    }
+
+    @media(min-width: 1200px) {
+        .header-left {
+            max-width: 840px
+        }
+    }
+</style>
